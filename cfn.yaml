@@ -73,3 +73,9 @@ Resources:
       RouteTableId: !Ref PublicRouteTable
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref IGW
+  PublicRouteTableAssociation:
+    # Explicit association between public subnet and public route table
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref PublicRouteTable
