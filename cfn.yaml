@@ -53,3 +53,10 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       CidrBlock: !FindInMap [SubnetConfig, Private, CIDR]
+  IGW:
+    Type: AWS::EC2::InternetGateway
+  AttachIGW:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref IGW
