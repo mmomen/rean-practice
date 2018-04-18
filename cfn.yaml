@@ -39,3 +39,9 @@ Resources:
         FromPort: '22'
         ToPort: '22'
         CidrIp: !Ref SSHIP
+  PublicSubnet:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: !FindInMap [SubnetConfig, Public, CIDR]
+      MapPublicIpOnLaunch: true
