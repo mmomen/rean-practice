@@ -10,12 +10,34 @@ A cloudformation template that accepts user inputs as parameters where applicabl
 
 ## Documentation
 
+### Parameters
+
+* `VPCName`: String, name of the VPC
+* `KeyName`: Name of an existing EC2 KeyPair to enable SSH access to the instance
+* `DatabaseName`: String
+* `DatabaseUser`: String
+* `DatabasePassword`: String, no default, `NoEcho` enabled
+* `SSHIP`: String, CIDR block to allow SSH (e.g. `123.123.123.123/32`) within `SSHSecurityGroup`
+* `WebDMZAccess`: String, CIDR block to allow HTTP/HTTPS within `WebDMZSecurityGroup`
+
+### Mappings
+```yaml
+Mappings:
+  SubnetConfig:
+    VPC:
+      CIDR: 172.20.0.0/16
+    Public:
+      CIDR: 172.20.0.0/24
+    Private:
+      CIDR: 172.20.1.0/24
+```
+
 ### Setup, Resources
 
 * CloudFormation
     * cfn.yaml is the Cloudformation template that sets up the infrastructure.
     * The resources include:
-        * VPC (mm-vpc)
+        * VPC
             * Security Groups
                 * SSHSecurityGroup
                     * Port 22 open to IP specified in `SSHIP` parameter
@@ -42,28 +64,6 @@ A cloudformation template that accepts user inputs as parameters where applicabl
 * Chef
     * Chef will be used to deploy and configure the Wordpress instance. I decided to use Chef to completely manage the Wordpress instance in order to have the management of it in one place (as opposed to deploying the instance with CFN and managing it with Chef).
 
-### Parameters
-
-* `VPCName`: String, name of the VPC
-* `KeyName`: Name of an existing EC2 KeyPair to enable SSH access to the instance
-* `DatabaseName`: String
-* `DatabaseUser`: String
-* `DatabasePassword`: String, no default, `NoEcho` enabled
-* `SSHIP`: String, CIDR block to allow SSH (e.g. `123.123.123.123/32`) within `SSHSecurityGroup`
-* `WebDMZAccess`: String, CIDR block to allow HTTP/HTTPS within `WebDMZSecurityGroup`
-
-### Mappings
-```yaml
-Mappings:
-  SubnetConfig:
-    VPC:
-      CIDR: 172.20.0.0/16
-    Public:
-      CIDR: 172.20.0.0/24
-    Private:
-      CIDR: 172.20.1.0/24
-```
-
 ## TODO
 
 ### Working on:
@@ -83,7 +83,7 @@ Chef:
     - IAM role for EC2 to access the relevant S3 bucket
 - Move DB off the local box and onto an RDS instance
     - IAM role, EC2/RDS
-- Make VPC/subnet CIDRs parameters
+- Make VPC/subnet CIDRs parameters (currently under mappings)
 - Descriptions for parameters
 - Force required values for DB related parameters
 - Default SSH address is open to the world - find another solution
