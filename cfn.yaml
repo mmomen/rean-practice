@@ -1,9 +1,17 @@
 Parameters:
+  VPCName:
+    Type: String
   KeyName:
     # https://github.com/awslabs/aws-cloudformation-templates/blob/8c8c4bf163c0356c67d9b8029fcba2d9a2962716/aws/services/VPC/VPC_EC2_Instance_With_Multiple_Static_IPAddresses.yaml#L10
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
     Type: AWS::EC2::KeyPair::KeyName
     ConstraintDescription: must be the name of an existing EC2 KeyPair.
+  SSHIP:
+    Type: String
+    Default: 0.0.0.0/0
+  WebDMZAccess:
+    Type: String
+    Default: 0.0.0.0/0
   DatabaseName:
     Type: String
     Default: wordpress
@@ -13,12 +21,6 @@ Parameters:
   DatabasePassword:
     Type: String
     NoEcho: true
-  SSHIP:
-    Type: String
-    Default: 0.0.0.0/0
-  WebDMZAccess:
-    Type: String
-    Default: 0.0.0.0/0
 Mappings:
   SubnetConfig:
     VPC:
@@ -34,7 +36,7 @@ Resources:
       CidrBlock: !FindInMap [SubnetConfig, VPC, CIDR]
       Tags:
         - Key: Name
-          Value: mm-vpc
+          Value: !Ref VPCName
   SSHSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
