@@ -16,6 +16,9 @@ Parameters:
   SSHIP:
     Type: String
     Default: 0.0.0.0/0
+  WebDMZAccess:
+    Type: String
+    Default: 0.0.0.0/0
 Mappings:
   SubnetConfig:
     VPC:
@@ -42,6 +45,20 @@ Resources:
         FromPort: '22'
         ToPort: '22'
         CidrIp: !Ref SSHIP
+  WebDMZSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref VPC
+      GroupDescription: Enable HTTP and HTTPS access to the world
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: !Ref WebDMZAccess
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        CidrIp: !Ref WebDMZAccess
   PublicSubnet:
     Type: AWS::EC2::Subnet
     Properties:
