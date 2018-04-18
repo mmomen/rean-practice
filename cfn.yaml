@@ -29,6 +29,9 @@ Resources:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: !FindInMap [SubnetConfig, VPC, CIDR]
+      Tags:
+        - Key: Name
+          Value: mm-vpc
   SSHSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
