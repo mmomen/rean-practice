@@ -75,7 +75,7 @@ Resources:
       CidrBlock: !FindInMap [SubnetConfig, Private, CIDR]
       Tags:
         - Key: Name
-          Value: Public Subnet
+          Value: Private Subnet
   IGW:
     Type: AWS::EC2::InternetGateway
   AttachIGW:
