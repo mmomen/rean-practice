@@ -124,3 +124,15 @@ Resources:
       RouteTableId: !Ref PrivateRouteTable
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId: !Ref NATGateway
+  ChefInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-1853ac65 # amazon linux 2017.09.1, us-east-1
+      InstanceType: t2.micro
+      KeyName: !Ref KeyName
+      SubnetId: !Ref PrivateSubnet
+      SecurityGroupIds:
+        - !Ref WebDMZSecurityGroup
+      Tags:
+        - Key: Name
+          Value: Chef 12
