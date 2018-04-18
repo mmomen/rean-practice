@@ -16,11 +16,19 @@ Parameters:
   SSHIP:
     Type: String
     Default: 0.0.0.0/0
+Mappings:
+  SubnetConfig:
+    VPC:
+      CIDR: 10.0.0.0/16
+    Public:
+      CIDR: 10.0.0.0/24
+    Private:
+      CIDR: 10.0.1.0/24
 Resources:
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: 10.0.0.0/16
+      CidrBlock: !FindInMap [SubnetConfig, VPC, CIDR]
   SSHSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
