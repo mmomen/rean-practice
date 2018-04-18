@@ -12,8 +12,8 @@ A cloudformation template that accepts user inputs as parameters where applicabl
 
 ### Setup, Resources
 
-* cfn.yaml
-    * The Cloudformation template that sets up the infrastructure.
+* CloudFormation
+    * cfn.yaml is the Cloudformation template that sets up the infrastructure.
     * The resources include:
         * VPC (mm-vpc)
             * Security Groups
@@ -38,6 +38,9 @@ A cloudformation template that accepts user inputs as parameters where applicabl
                     * Instance type: t2.micro (hardcoded currently)
                     * Subnet: private
                     * Security group(s): WebDMZSecurityGroup
+
+* Chef
+    * Chef will be used to deploy and configure the Wordpress instance. I decided to use Chef to completely manage the Wordpress instance in order to have the management of it in one place (as opposed to deploying the instance with CFN and managing it with Chef).
 
 ### Parameters
 
@@ -76,13 +79,15 @@ Chef:
 - Configure Wordpress
 
 ### Improvements:
-- storage, s3 instead of local on wordpress box
-    - Use Chef to apply IAM role to WP box
-- move db off onto an rds instance
-- make cidrs to parameters
-- make vpc name a parameter
-- make CIDR blocks available as a parameter
-- add descriptions for parameters
+- Use S3 for storage instead of local storage on the Wordpress instance
+    - IAM role for EC2 to access the relevant S3 bucket
+- Move DB off the local box and onto an RDS instance
+    - IAM role, EC2/RDS
+- Make VPC/subnet CIDRs parameters
+- Descriptions for parameters
+- Force required values for DB related parameters
+- Default SSH address is open to the world - find another solution
+- Hardcoded AMI (us-east-1) prevents using this template in other regions
 
 ### Completed:
 
